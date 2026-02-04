@@ -3,7 +3,7 @@
 A real-time and video-based tracking system for *Drosophila* (fruit flies) in behavioral experiments. This project enables detection, tracking, and orientation analysis of multiple flies using computer vision and machine learning.
 
 <p align="center">
-  <img src="images/Flies.png" alt="Drosophila tracking concept" width="500"/>
+  <img src="images/Flies.png" alt="Drosophila tracking concept" width="400"/>
 </p>
 
 ## Project Objectives
