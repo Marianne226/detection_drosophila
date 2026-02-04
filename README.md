@@ -2,10 +2,6 @@
 
 A real-time and video-based tracking system for *Drosophila* (fruit flies) in behavioral experiments. This project enables detection, tracking, and orientation analysis of multiple flies using computer vision and machine learning.
 
-<p align="center">
-  <img src="images/Flies.png" alt="Drosophila tracking concept" width="500"/>
-</p>
-
 ## Why Track Drosophila?
 
 Understanding the behaviors of *Drosophila* provides valuable insight into complex neural mechanisms and goal-directed sensorimotor transformations. The development of the Drosophila connectome enables researchers to observe these transformations and understand how sensory integration is linked to specific neuronal connections.
