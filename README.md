@@ -3,8 +3,26 @@
 A real-time and video-based tracking system for *Drosophila* (fruit flies) in behavioral experiments. This project enables detection, tracking, and orientation analysis of multiple flies using computer vision and machine learning.
 
 <p align="center">
-  <img src="images/Flies.png" alt="Drosophila tracking concept" width="400"/>
+  <img src="images/Flies.png" alt="Drosophila tracking concept" width="500"/>
 </p>
+
+## Why Track Drosophila?
+
+Understanding the behaviors of *Drosophila* provides valuable insight into complex neural mechanisms and goal-directed sensorimotor transformations. The development of the Drosophila connectome enables researchers to observe these transformations and understand how sensory integration is linked to specific neuronal connections.
+
+One particularly interesting behavior is **"social reaching"** — the movement of a fly's middle leg when another fly passes nearby. This sensorimotor transformation raises many scientific questions: What cues trigger this movement? What is the precise trajectory of the middle leg? What distance between flies is required? What neural connections are involved?
+
+<p align="center">
+  <img src="images/Flies.png" alt="Social reaching behaviour" width="400"/>
+</p>
+
+To answer these questions, **repeatability is crucial**. Working with live animals introduces variability, making it difficult to draw robust conclusions. The solution is to replace one fly with a **robotized magnet** that performs controlled, repeatable trajectories. This creates a closed-loop control system where:
+
+- The **camera** provides real-time visual feedback about the fly's position and orientation
+- The **computer vision algorithm** extracts key features (position, head direction, dorsal/ventral view)
+- The **robot controller** moves the magnet along precise trajectories to trigger and study the social reaching behavior
+
+This project implements the computer vision component of this closed-loop system.
 
 ## Project Objectives
 
