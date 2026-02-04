@@ -2,11 +2,15 @@
 
 A real-time and video-based tracking system for *Drosophila* (fruit flies) in behavioral experiments. This project enables detection, tracking, and orientation analysis of multiple flies using computer vision and machine learning.
 
+<p align="center">
+  <img src="images/Flies.png" alt="Drosophila tracking concept" width="500"/>
+</p>
+
 ## Project Objectives
 
 - **Real-time tracking** of multiple flies (typically 2) from live camera feed
 - **Video-based tracking** for post-processing of recorded experiments
-- **Orientation detection** - determine fly head position and facing direction (stomach vs back visible)
+- **Orientation detection** - determine fly head position and facing direction (dorsal vs ventral view)
 - **Magnet/robot tracking** - track a magnet or robot alongside flies for controlled experiments
 - **ML classification** - use CNN (ResNet50) and SVM models to classify fly facing direction
 - **Robot position planning** - calculate feasible robot positions relative to the fly for experiment automation
@@ -88,6 +92,12 @@ This sets up the camera capture and pipes frames to the Python GUI:
 ./flir-control 20 | python gui.py
 ```
 
+The GUI provides real-time visualization of fly tracking, robot position, and control interfaces:
+
+<p align="center">
+  <img src="images/GUI.png" alt="Live tracking GUI interface" width="700"/>
+</p>
+
 ### 2. Video Processing
 
 #### Track 2 Flies (no robot)
@@ -142,25 +152,74 @@ Open and run the Jupyter notebooks:
 
 ### Tracking Pipeline
 
-1. **Preprocessing** - Hide walls, apply threshold, detect contours
-2. **Detection** - Find the 2 largest contours (fly + robot/magnet), apply erosion/dilation corrections if needed
-3. **ID Assignment** - Hungarian algorithm maintains identity across frames
-4. **Orientation Analysis** - Fit ellipse to fly contour, determine head position via intensity analysis
-5. **ML Classification** - Every 10 frames, classify facing direction (stomach=1, back=2)
-6. **Robot Planning** - Calculate feasible angles/positions for magnet movement
-7. **Output** - Annotated frames with trajectories, angles, and predictions
+<p align="center">
+  <img src="images/process_video_outline.png" alt="Video processing pipeline" width="600"/>
+</p>
 
-### ML Models
+The pipeline consists of the following stages:
 
-| Model | Architecture | Purpose |
-|-------|--------------|---------|
-| **CNN** | ResNet50 (fine-tuned) | Binary classification: stomach vs back visible |
-| **SVM** | SVM with PCA features | Alternative classifier for facing direction |
+1. **Preprocessing** - Hide walls, apply threshold to isolate objects
+2. **Fly Detection** - Contour detection with correction for merged/split detections
+3. **ID Assignment** - Hungarian algorithm maintains identity across frames (reordering w.r.t. IDs)
+4. **Head Detection** - Fit ellipse to fly contour, determine head position via intensity analysis
+5. **Dorsal vs Ventral Classification** - Every 10 frames, ML model classifies facing direction
+6. **Feasible Magnet Position** - Calculate valid angles/positions for robot movement
 
-Both models can be used individually or as an ensemble for improved accuracy.
+### Head Detection
+
+The system detects fly contours and identifies the head position using ellipse fitting and intensity analysis:
+
+<p align="center">
+  <img src="images/found_head.png" alt="Head detection result" width="450"/>
+</p>
+
+*Green contour: detected fly outline. Red ellipse: head position marker. Yellow marker on magnet indicates robot ID.*
+
+### Dorsal vs Ventral View Classification
+
+The ML models classify whether the fly is showing its dorsal (back) or ventral (stomach) side:
+
+<p align="center">
+  <img src="images/Facing.png" alt="Dorsal vs Ventral view" width="500"/>
+</p>
+
+*Left: Dorsal view (back visible, green marker). Right: Ventral view (stomach visible, yellow marker).*
+
+### Tracking Output with Feasible Region
+
+The system also computes feasible positions for the magnet/robot relative to the fly:
+
+<p align="center">
+  <img src="images/ventral_view.png" alt="Tracking output with feasible region" width="450"/>
+</p>
+
+*Blue circle: feasible region for magnet movement. Blue squares: boundary markers. Frame number shown in top-left.*
+
+## ML Models
+
+### Model Comparison
+
+The CNN and SVM classifiers were trained to distinguish between dorsal and ventral fly orientations:
+
+<p align="center">
+  <img src="images/cnn_svm_accuracies.png" alt="Model accuracy comparison" width="550"/>
+</p>
+
+| Model | Architecture | Accuracy |
+|-------|--------------|----------|
+| **CNN** | ResNet50 (fine-tuned) | 99.17% |
+| **SVM** | SVM with PCA features | 97.35% |
+
+### SVM Confusion Matrix
+
+<p align="center">
+  <img src="images/confusion_svm.png" alt="SVM confusion matrix" width="400"/>
+</p>
+
+Both models can be used individually or as an ensemble for improved robustness.
 
 ## Output
 
-- **Annotated video** - Visual tracking with trajectories and orientation markers
+- **Annotated video** - Visual tracking with contours, head markers, trajectories, and feasible regions
 - **Trajectory DataFrame** - CSV/DataFrame containing frame-by-frame positions, orientations, and predictions
 - **Performance metrics** - Tracking accuracy and classification metrics
