@@ -219,10 +219,14 @@ The CNN and SVM classifiers were trained to distinguish between dorsal and ventr
   <img src="images/cnn_svm_accuracies.png" alt="Model accuracy comparison" width="550"/>
 </p>
 
+<div align="center">
+
 | Model | Architecture | Accuracy |
 |-------|--------------|----------|
 | **CNN** | ResNet50 (fine-tuned) | 99.17% |
 | **SVM** | SVM with PCA features | 97.35% |
+
+</div>
 
 ### SVM Confusion Matrix
 
